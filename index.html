@@ -128,37 +128,8 @@
     </div>
   </div>
 
-  <!-- PASSWORD LOCK SCREEN -->
-  <div id="lockScreen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md">
-    <div class="glass-card max-w-md w-full p-8 rounded-2xl shadow-2xl text-center space-y-6 border border-slate-800">
-      <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-600/20 text-blue-400 text-2xl mb-2">
-        <i class="fa-solid fa-user-shield"></i>
-      </div>
-      <div>
-        <h2 class="text-2xl font-bold text-white tracking-wide">Portal Authorization</h2>
-        <p class="text-slate-400 text-sm mt-1">Enter passcode to access portal</p>
-      </div>
-
-      <div class="space-y-4">
-        <div class="relative">
-          <input type="password" id="passInput" placeholder="Enter password..."
-            class="glass-input w-full px-4 py-3 rounded-xl text-center text-lg font-mono text-white placeholder-slate-500 transition"
-            onkeydown="if(event.key==='Enter') unlockPortal()">
-        </div>
-        <button onclick="unlockPortal()"
-          class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-3 rounded-xl shadow-lg shadow-blue-500/20 smooth-transition active:scale-98">
-          Unlock Portal <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
-        </button>
-      </div>
-
-      <div id="lockError" class="hidden text-red-400 text-xs bg-red-950/40 border border-red-800/50 py-2 rounded-lg">
-        <i class="fa-solid fa-circle-exclamation mr-1"></i> Incorrect passcode. Try again.
-      </div>
-    </div>
-  </div>
-
   <!-- MAIN PORTAL APPLICATION -->
-  <div id="portalContent" class="hidden min-h-screen flex flex-col">
+  <div id="portalContent" class="min-h-screen flex flex-col">
     
     <!-- Top Stealth Navigation Bar -->
     <header class="glass-card sticky top-0 z-40 px-4 lg:px-8 py-3 flex items-center justify-between border-b border-slate-800/80">
@@ -209,14 +180,11 @@
         </button>
       </nav>
 
-      <!-- Action Buttons (Panic & Lock) -->
+      <!-- Action Buttons (Panic Mode) -->
       <div class="flex items-center space-x-2">
         <button onclick="togglePanicMode()" title="Panic Screen (ESC)" class="bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center space-x-1 smooth-transition">
           <i class="fa-solid fa-eye-slash"></i>
           <span class="hidden sm:inline">Panic (ESC)</span>
-        </button>
-        <button onclick="lockPortalSession()" title="Lock Screen" class="bg-slate-800 hover:bg-slate-700 text-slate-300 p-2 rounded-xl text-xs smooth-transition">
-          <i class="fa-solid fa-lock"></i>
         </button>
       </div>
     </header>
@@ -224,25 +192,22 @@
     <!-- Main Content Container -->
     <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
 
-      <!-- ACTIVE MEDIA VIEWPORT PLAYER (Always rendered on top) -->
+      <!-- ACTIVE MEDIA VIEWPORT PLAYER -->
       <section id="playerContainer" class="space-y-3">
         <!-- Player Header & Action Bar -->
         <div class="flex items-center justify-between bg-slate-900/80 px-4 py-2.5 rounded-xl border border-slate-800">
           <div class="flex items-center space-x-2 overflow-hidden">
             <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-            <h3 id="currentAppTitle" class="text-sm font-semibold text-white truncate">Kirka.io FPS</h3>
+            <h3 id="currentAppTitle" class="text-sm font-semibold text-white truncate">Bloxd.io Minecraft</h3>
           </div>
 
           <div class="flex items-center space-x-2">
-            <!-- Refresh Button -->
             <button onclick="reloadActiveFrame()" title="Reload Frame" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-lg smooth-transition">
               <i class="fa-solid fa-rotate-right"></i>
             </button>
-            <!-- Theater Mode -->
             <button onclick="toggleTheaterMode()" title="Theater Mode" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-lg smooth-transition">
               <i class="fa-solid fa-expand"></i> Theater
             </button>
-            <!-- Fullscreen Frame -->
             <button onclick="fullscreenFrame()" title="Browser Fullscreen" class="text-xs bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded-lg font-medium smooth-transition shadow-sm">
               <i class="fa-solid fa-up-right-and-down-left-from-center mr-1"></i> Fullscreen
             </button>
@@ -251,21 +216,40 @@
 
         <!-- The Responsive Iframe Display -->
         <div class="iframe-wrapper border border-slate-800">
-          <iframe id="mainIframe" src="https://kirka.io" allow="autoplay; encrypted-media; camera; microphone; geolocation; fullscreen" allowfullscreen></iframe>
+          <iframe id="mainIframe" src="https://bloxd.io" allow="autoplay; encrypted-media; camera; microphone; geolocation; fullscreen" allowfullscreen></iframe>
         </div>
       </section>
 
-      <!-- CATEGORY 1: GAMES GRID -->
+      <!-- CATEGORY 1: GAMES GRID (16 GAMES TOTAL) -->
       <section id="section-games" class="space-y-4">
         <div class="flex items-center justify-between border-b border-slate-800 pb-3">
           <h2 class="text-lg font-bold text-white flex items-center">
-            <i class="fa-solid fa-crosshairs text-blue-500 mr-2"></i> Featured Browser FPS & Arena Games
+            <i class="fa-solid fa-gamepad text-blue-500 mr-2"></i> Unblocked Web Games Library
           </h2>
-          <span class="text-xs text-slate-400">Click any game to load instantly</span>
+          <span class="text-xs text-slate-400">Click any card to play immediately</span>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
-          <!-- Game Card 1 -->
+
+          <!-- 1. Bloxd.io (Minecraft Web) -->
+          <div onclick="launchApp('Bloxd.io Minecraft', 'https://bloxd.io')" class="game-card glass-card p-3 rounded-xl cursor-pointer border border-slate-800 smooth-transition group text-center space-y-2">
+            <div class="w-full h-24 bg-gradient-to-br from-emerald-800 to-teal-900 rounded-lg flex items-center justify-center text-3xl text-emerald-300 group-hover:scale-105 smooth-transition">
+              <i class="fa-solid fa-cubes"></i>
+            </div>
+            <p class="font-semibold text-xs text-white truncate">Bloxd.io (Minecraft)</p>
+            <span class="inline-block text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full">Voxel MC</span>
+          </div>
+
+          <!-- 2. Eaglercraft MC Web -->
+          <div onclick="launchApp('Eaglercraft Minecraft', 'https://eaglercraft.ru')" class="game-card glass-card p-3 rounded-xl cursor-pointer border border-slate-800 smooth-transition group text-center space-y-2">
+            <div class="w-full h-24 bg-gradient-to-br from-green-900 to-emerald-950 rounded-lg flex items-center justify-center text-3xl text-green-300 group-hover:scale-105 smooth-transition">
+              <i class="fa-solid fa-cube"></i>
+            </div>
+            <p class="font-semibold text-xs text-white truncate">Eaglercraft MC</p>
+            <span class="inline-block text-[10px] bg-green-500/20 text-green-300 px-2 py-0.5 rounded-full">Minecraft 1.8</span>
+          </div>
+
+          <!-- 3. Kirka.io -->
           <div onclick="launchApp('Kirka.io FPS', 'https://kirka.io')" class="game-card glass-card p-3 rounded-xl cursor-pointer border border-slate-800 smooth-transition group text-center space-y-2">
             <div class="w-full h-24 bg-gradient-to-br from-indigo-900 to-purple-900 rounded-lg flex items-center justify-center text-3xl text-indigo-300 group-hover:scale-105 smooth-transition">
               <i class="fa-solid fa-gun"></i>
@@ -274,83 +258,78 @@
             <span class="inline-block text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full">FPS Shooter</span>
           </div>
 
-          <!-- Game Card 2 -->
+          <!-- 4. Smash Karts -->
+          <div onclick="launchApp('Smash Karts', 'https://smashkarts.io')" class="game-card glass-card p-3 rounded-xl cursor-pointer border border-slate-800 smooth-transition group text-center space-y-2">
+            <div class="w-full h-24 bg-gradient-to-br from-red-900 to-orange-900 rounded-lg flex items-center justify-center text-3xl text-red-300 group-hover:scale-105 smooth-transition">
+              <i class="fa-solid fa-car-burst"></i>
+            </div>
+            <p class="font-semibold text-xs text-white truncate">Smash Karts</p>
+            <span class="inline-block text-[10px] bg-red-500/20 text-red-300 px-2 py-0.5 rounded-full">3D Kart Arena</span>
+          </div>
+
+          <!-- 5. Slope Game -->
+          <div onclick="launchApp('Slope Game', 'https://slopegame.io')" class="game-card glass-card p-3 rounded-xl cursor-pointer border border-slate-800 smooth-transition group text-center space-y-2">
+            <div class="w-full h-24 bg-gradient-to-br from-emerald-950 to-green-800 rounded-lg flex items-center justify-center text-3xl text-green-400 group-hover:scale-105 smooth-transition">
+              <i class="fa-solid fa-bowling-ball"></i>
+            </div>
+            <p class="font-semibold text-xs text-white truncate">Slope</p>
+            <span class="inline-block text-[10px] bg-green-500/20 text-green-300 px-2 py-0.5 rounded-full">3D Runner</span>
+          </div>
+
+          <!-- 6. Retro Bowl -->
+          <div onclick="launchApp('Retro Bowl', 'https://retrobowl.me')" class="game-card glass-card p-3 rounded-xl cursor-pointer border border-slate-800 smooth-transition group text-center space-y-2">
+            <div class="w-full h-24 bg-gradient-to-br from-amber-900 to-yellow-900 rounded-lg flex items-center justify-center text-3xl text-amber-300 group-hover:scale-105 smooth-transition">
+              <i class="fa-solid fa-football"></i>
+            </div>
+            <p class="font-semibold text-xs text-white truncate">Retro Bowl</p>
+            <span class="inline-block text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full">Football</span>
+          </div>
+
+          <!-- 7. Shell Shockers -->
           <div onclick="launchApp('Shell Shockers', 'https://shellshock.io')" class="game-card glass-card p-3 rounded-xl cursor-pointer border border-slate-800 smooth-transition group text-center space-y-2">
-            <div class="w-full h-24 bg-gradient-to-br from-amber-900 to-orange-900 rounded-lg flex items-center justify-center text-3xl text-amber-300 group-hover:scale-105 smooth-transition">
+            <div class="w-full h-24 bg-gradient-to-br from-amber-950 to-orange-950 rounded-lg flex items-center justify-center text-3xl text-amber-400 group-hover:scale-105 smooth-transition">
               <i class="fa-solid fa-egg"></i>
             </div>
             <p class="font-semibold text-xs text-white truncate">Shell Shockers</p>
             <span class="inline-block text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full">Egg Shooter</span>
           </div>
 
-          <!-- Game Card 3 -->
-          <div onclick="launchApp('Ev.io Sci-Fi Shooter', 'https://ev.io')" class="game-card glass-card p-3 rounded-xl cursor-pointer border border-slate-800 smooth-transition group text-center space-y-2">
+          <!-- 8. Basket Random -->
+          <div onclick="launchApp('Basket Random', 'https://basketrandom.com')" class="game-card glass-card p-3 rounded-xl cursor-pointer border border-slate-800 smooth-transition group text-center space-y-2">
+            <div class="w-full h-24 bg-gradient-to-br from-orange-900 to-red-900 rounded-lg flex items-center justify-center text-3xl text-orange-300 group-hover:scale-105 smooth-transition">
+              <i class="fa-solid fa-basketball"></i>
+            </div>
+            <p class="font-semibold text-xs text-white truncate">Basket Random</p>
+            <span class="inline-block text-[10px] bg-orange-500/20 text-orange-300 px-2 py-0.5 rounded-full">Physics Sports</span>
+          </div>
+
+          <!-- 9. Moto X3M -->
+          <div onclick="launchApp('Moto X3M', 'https://motox3m.co')" class="game-card glass-card p-3 rounded-xl cursor-pointer border border-slate-800 smooth-transition group text-center space-y-2">
+            <div class="w-full h-24 bg-gradient-to-br from-yellow-900 to-orange-800 rounded-lg flex items-center justify-center text-3xl text-yellow-300 group-hover:scale-105 smooth-transition">
+              <i class="fa-solid fa-motorcycle"></i>
+            </div>
+            <p class="font-semibold text-xs text-white truncate">Moto X3M</p>
+            <span class="inline-block text-[10px] bg-yellow-500/20 text-yellow-300 px-2 py-0.5 rounded-full">Bike Stunt</span>
+          </div>
+
+          <!-- 10. Geometry Dash -->
+          <div onclick="launchApp('Geometry Dash Web', 'https://geometrydash.io')" class="game-card glass-card p-3 rounded-xl cursor-pointer border border-slate-800 smooth-transition group text-center space-y-2">
             <div class="w-full h-24 bg-gradient-to-br from-cyan-900 to-blue-900 rounded-lg flex items-center justify-center text-3xl text-cyan-300 group-hover:scale-105 smooth-transition">
-              <i class="fa-solid fa-robot"></i>
+              <i class="fa-solid fa-shapes"></i>
             </div>
-            <p class="font-semibold text-xs text-white truncate">Ev.io</p>
-            <span class="inline-block text-[10px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full">Sci-Fi FPS</span>
+            <p class="font-semibold text-xs text-white truncate">Geometry Dash</p>
+            <span class="inline-block text-[10px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full">Rhythm</span>
           </div>
 
-          <!-- Game Card 4 -->
-          <div onclick="launchApp('Venge.io Hero FPS', 'https://venge.io')" class="game-card glass-card p-3 rounded-xl cursor-pointer border border-slate-800 smooth-transition group text-center space-y-2">
-            <div class="w-full h-24 bg-gradient-to-br from-rose-900 to-red-900 rounded-lg flex items-center justify-center text-3xl text-rose-300 group-hover:scale-105 smooth-transition">
-              <i class="fa-solid fa-shield-halved"></i>
+          <!-- 11. Subway Surfers -->
+          <div onclick="launchApp('Subway Surfers Web', 'https://subway-surfers.org')" class="game-card glass-card p-3 rounded-xl cursor-pointer border border-slate-800 smooth-transition group text-center space-y-2">
+            <div class="w-full h-24 bg-gradient-to-br from-pink-900 to-rose-900 rounded-lg flex items-center justify-center text-3xl text-pink-300 group-hover:scale-105 smooth-transition">
+              <i class="fa-solid fa-person-running"></i>
             </div>
-            <p class="font-semibold text-xs text-white truncate">Venge.io</p>
-            <span class="inline-block text-[10px] bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded-full">Hero FPS</span>
+            <p class="font-semibold text-xs text-white truncate">Subway Surfers</p>
+            <span class="inline-block text-[10px] bg-pink-500/20 text-pink-300 px-2 py-0.5 rounded-full">Endless Runner</span>
           </div>
 
-          <!-- Game Card 5 -->
-          <div onclick="launchApp('Voxiom.io Block FPS', 'https://voxiom.io')" class="game-card glass-card p-3 rounded-xl cursor-pointer border border-slate-800 smooth-transition group text-center space-y-2">
-            <div class="w-full h-24 bg-gradient-to-br from-emerald-900 to-teal-900 rounded-lg flex items-center justify-center text-3xl text-emerald-300 group-hover:scale-105 smooth-transition">
-              <i class="fa-solid fa-cube"></i>
-            </div>
-            <p class="font-semibold text-xs text-white truncate">Voxiom.io</p>
-            <span class="inline-block text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full">Voxel BR</span>
-          </div>
-
-          <!-- Game Card 6 -->
-          <div onclick="launchApp('Narrow One Bow Shooter', 'https://narrow.one')" class="game-card glass-card p-3 rounded-xl cursor-pointer border border-slate-800 smooth-transition group text-center space-y-2">
-            <div class="w-full h-24 bg-gradient-to-br from-yellow-900 to-amber-950 rounded-lg flex items-center justify-center text-3xl text-yellow-300 group-hover:scale-105 smooth-transition">
-              <i class="fa-solid fa-bullseye"></i>
-            </div>
-            <p class="font-semibold text-xs text-white truncate">Narrow One</p>
-            <span class="inline-block text-[10px] bg-yellow-500/20 text-yellow-300 px-2 py-0.5 rounded-full">Archery</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- CATEGORY 2: YOUTUBE SECTION -->
-      <section id="section-youtube" class="hidden space-y-4">
-        <div class="glass-card p-5 rounded-2xl border border-slate-800 space-y-4">
-          <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-xl bg-red-600/20 text-red-500 flex items-center justify-center text-xl">
-              <i class="fa-brands fa-youtube"></i>
-            </div>
-            <div>
-              <h2 class="text-lg font-bold text-white">YouTube Embed Launcher</h2>
-              <p class="text-xs text-slate-400">Watch videos seamlessly inside your private portal layout</p>
-            </div>
-          </div>
-
-          <!-- Input Bar for YouTube Link -->
-          <div class="flex flex-col sm:flex-row gap-2">
-            <input type="text" id="ytUrlInput" placeholder="Paste YouTube Link or Video ID (e.g. https://www.youtube.com/watch?v=...)"
-              class="glass-input flex-1 px-4 py-2.5 rounded-xl text-sm text-white placeholder-slate-500">
-            <button onclick="loadCustomYouTube()"
-              class="bg-red-600 hover:bg-red-500 text-white font-semibold px-5 py-2.5 rounded-xl text-sm smooth-transition flex items-center justify-center space-x-2">
-              <i class="fa-solid fa-play"></i>
-              <span>Play Video</span>
-            </button>
-          </div>
-
-          <!-- Quick YouTube Presets -->
-          <div class="pt-2">
-            <p class="text-xs text-slate-400 mb-2">Quick Presets & Lo-Fi Beats:</p>
-            <div class="flex flex-wrap gap-2">
-              <button onclick="launchApp('Lofi Hip Hop Radio', 'https://www.youtube-nocookie.com/embed/jfKfPfyJRdk?autoplay=1')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-xs smooth-transition">
-                ☕ Lofi Girl Radio
-
-
-                
+          <!-- 12. BitLife -->
+          <div onclick="launchApp('BitLife Online', 'https://bitlifeonline.com')" c
+            
