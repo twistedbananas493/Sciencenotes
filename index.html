@@ -1,0 +1,354 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">Google Docs - Assignment Notes</title>
+  <link id="favicon" rel="icon" href="https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico" type="image/x-icon">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0d0f12;
+      color: #e2e8f0;
+      overflow-x: hidden;
+    }
+
+    /* Glassmorphism utility styles */
+    .glass-card {
+      background: rgba(22, 27, 34, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .glass-input {
+      background: rgba(15, 20, 25, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .glass-input:focus {
+      border-color: #3b82f6;
+      outline: none;
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+    }
+
+    /* Custom scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0d0f12;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2a3241;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3b82f6;
+    }
+
+    /* Smooth transition effects */
+    .smooth-transition {
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Glowing game card hover */
+    .game-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.3);
+      border-color: rgba(59, 130, 246, 0.5);
+    }
+
+    /* Fullscreen iframe container */
+    .iframe-wrapper {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 Aspect Ratio */
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+      box-shadow: 0 20px 30px rgba(0,0,0,0.6);
+    }
+
+    .iframe-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* Theater Mode */
+    body.theater-mode .hide-in-theater {
+      display: none !important;
+    }
+    body.theater-mode .iframe-wrapper {
+      padding-top: 0;
+      height: calc(100vh - 70px);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+  <!-- FAKE GOOGLE DOCS PANIC OVERLAY (Activated on ESC or button click) -->
+  <div id="panicOverlay" class="fixed inset-0 bg-white text-gray-800 z-[9999] hidden overflow-y-auto">
+    <div class="border-b border-gray-200 px-6 py-3 flex items-center justify-between bg-gray-50">
+      <div class="flex items-center space-x-3">
+        <i class="fa-solid fa-file-lines text-blue-600 text-2xl"></i>
+        <div>
+          <h1 class="font-semibold text-lg leading-tight">AP World History - Chapter 14 Research & Notes</h1>
+          <p class="text-xs text-gray-500">File &bull; Edit &bull; View &bull; Insert &bull; Format &bull; Tools</p>
+        </div>
+      </div>
+      <button onclick="togglePanicMode()" class="text-xs bg-gray-200 hover:bg-gray-300 px-3 py-1.5 rounded text-gray-700 font-medium">
+        Resume Workspace
+      </button>
+    </div>
+    <div class="max-w-3xl mx-auto my-8 bg-white p-10 shadow-md border border-gray-200 rounded min-h-[800px] text-sm leading-relaxed font-serif">
+      <h2 class="text-2xl font-bold font-sans mb-4 text-gray-900">Unit 4: Global Interactions & Technological Expansion (1450–1750)</h2>
+      <p class="mb-4"><strong>Key Concept 4.1:</strong> Technological Innovations and Regional Integration. Transoceanic maritime reconnaissance led to cross-cultural exchange, economic shifts, and new trade networks across the Atlantic and Indian Oceans.</p>
+      <h3 class="text-lg font-bold font-sans mt-6 mb-2 text-gray-800">1. Maritime Technology Development</h3>
+      <ul class="list-disc pl-6 space-y-2 mb-4">
+        <li>Astrolabe refinement and magnetic compass adoption from Asian trade routes.</li>
+        <li>Development of caravel, carrack, and fluyt vessels designed for ocean navigation.</li>
+        <li>Understanding of global wind and current patterns (e.g., <em>volta do mar</em>).</li>
+      </ul>
+      <h3 class="text-lg font-bold font-sans mt-6 mb-2 text-gray-800">2. Economic Systems & Trade Companies</h3>
+      <p class="mb-4">Mercantilist policies driven by European rulers led to state-sponsored joint-stock companies, such as the Dutch East India Company (VOC) and British East India Company.</p>
+      <div class="p-4 bg-blue-50 border-l-4 border-blue-500 my-4 text-xs font-sans text-blue-900">
+        <strong>Study Reminder:</strong> Be prepared to analyze primary source documents regarding silver flow from Potosí to Qing Dynasty China for Friday's quiz.
+      </div>
+    </div>
+  </div>
+
+  <!-- PASSWORD LOCK SCREEN -->
+  <div id="lockScreen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md">
+    <div class="glass-card max-w-md w-full p-8 rounded-2xl shadow-2xl text-center space-y-6 border border-slate-800">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-600/20 text-blue-400 text-2xl mb-2">
+        <i class="fa-solid fa-user-shield"></i>
+      </div>
+      <div>
+        <h2 class="text-2xl font-bold text-white tracking-wide">Portal Authorization</h2>
+        <p class="text-slate-400 text-sm mt-1">Enter your passcode to access private portal apps</p>
+      </div>
+
+      <div class="space-y-4">
+        <div class="relative">
+          <input type="password" id="passInput" placeholder="Enter password..."
+            class="glass-input w-full px-4 py-3 rounded-xl text-center text-lg font-mono text-white placeholder-slate-500 transition"
+            onkeydown="if(event.key==='Enter') unlockPortal()">
+        </div>
+        <button onclick="unlockPortal()"
+          class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-3 rounded-xl shadow-lg shadow-blue-500/20 smooth-transition active:scale-98">
+          Unlock Portal <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+        </button>
+      </div>
+
+      <div id="lockError" class="hidden text-red-400 text-xs bg-red-950/40 border border-red-800/50 py-2 rounded-lg">
+        <i class="fa-solid fa-circle-exclamation mr-1"></i> Incorrect passcode. Try again.
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN PORTAL APPLICATION -->
+  <div id="portalContent" class="hidden min-h-screen flex flex-col">
+    
+    <!-- Top Stealth Navigation Bar -->
+    <header class="glass-card sticky top-0 z-40 px-4 lg:px-8 py-3 flex items-center justify-between border-b border-slate-800/80">
+      <!-- Left Logo & Disguise Quick Switcher -->
+      <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-2 cursor-pointer" onclick="switchCategory('games')">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+            <i class="fa-solid fa-cubes text-lg"></i>
+          </div>
+          <span class="font-bold text-lg text-white tracking-tight hidden sm:inline">Portal<span class="text-blue-400">Hub</span></span>
+        </div>
+
+        <!-- Stealth Tab Cloaker Dropdown -->
+        <div class="relative group">
+          <button class="text-xs bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700 px-3 py-1.5 rounded-lg flex items-center space-x-1.5 smooth-transition">
+            <i class="fa-solid fa-user-ninja text-blue-400"></i>
+            <span class="hidden md:inline">Cloak Tab:</span>
+            <span id="activeCloakName" class="font-medium text-white">Google Docs</span>
+            <i class="fa-solid fa-chevron-down text-[10px] ml-1"></i>
+          </button>
+          <div class="absolute left-0 mt-1 w-48 glass-card rounded-xl shadow-xl py-1 hidden group-hover:block z-50 border border-slate-700">
+            <button onclick="setTabCloak('docs')" class="w-full text-left px-3 py-2 text-xs text-slate-300 hover:bg-blue-600/20 hover:text-white flex items-center space-x-2">
+              <i class="fa-solid fa-file-word text-blue-400"></i> <span>Google Docs</span>
+            </button>
+            <button onclick="setTabCloak('canvas')" class="w-full text-left px-3 py-2 text-xs text-slate-300 hover:bg-red-600/20 hover:text-white flex items-center space-x-2">
+              <i class="fa-solid fa-graduation-cap text-red-400"></i> <span>Canvas LMS</span>
+            </button>
+            <button onclick="setTabCloak('drive')" class="w-full text-left px-3 py-2 text-xs text-slate-300 hover:bg-yellow-600/20 hover:text-white flex items-center space-x-2">
+              <i class="fa-solid fa-hard-drive text-yellow-400"></i> <span>Google Drive</span>
+            </button>
+            <button onclick="setTabCloak('wikipedia')" class="w-full text-left px-3 py-2 text-xs text-slate-300 hover:bg-gray-600/20 hover:text-white flex items-center space-x-2">
+              <i class="fa-solid fa-globe text-gray-300"></i> <span>Wikipedia</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="flex items-center space-x-1 sm:space-x-2">
+        <button id="nav-games" onclick="switchCategory('games')" class="nav-btn px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-medium text-white bg-blue-600 shadow-md shadow-blue-600/20 smooth-transition">
+          <i class="fa-solid fa-gamepad mr-1.5"></i> Games
+        </button>
+        <button id="nav-youtube" onclick="switchCategory('youtube')" class="nav-btn px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800 smooth-transition">
+          <i class="fa-brands fa-youtube mr-1.5 text-red-500"></i> YouTube
+        </button>
+        <button id="nav-roblox" onclick="switchCategory('roblox')" class="nav-btn px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800 smooth-transition">
+          <i class="fa-solid fa-cube mr-1.5 text-emerald-400"></i> Roblox/Custom
+        </button>
+      </nav>
+
+      <!-- Action Buttons (Panic & Lock) -->
+      <div class="flex items-center space-x-2">
+        <button onclick="togglePanicMode()" title="Panic Screen (ESC)" class="bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center space-x-1 smooth-transition">
+          <i class="fa-solid fa-eye-slash"></i>
+          <span class="hidden sm:inline">Panic (ESC)</span>
+        </button>
+        <button onclick="lockPortalSession()" title="Lock Screen" class="bg-slate-800 hover:bg-slate-700 text-slate-300 p-2 rounded-xl text-xs smooth-transition">
+          <i class="fa-solid fa-lock"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+
+      <!-- ACTIVE MEDIA VIEWPORT PLAYER (Always rendered on top) -->
+      <section id="playerContainer" class="space-y-3">
+        <!-- Player Header & Action Bar -->
+        <div class="flex items-center justify-between bg-slate-900/80 px-4 py-2.5 rounded-xl border border-slate-800">
+          <div class="flex items-center space-x-2 overflow-hidden">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <h3 id="currentAppTitle" class="text-sm font-semibold text-white truncate">Kirka.io FPS</h3>
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <!-- Refresh Button -->
+            <button onclick="reloadActiveFrame()" title="Reload Frame" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-lg smooth-transition">
+              <i class="fa-solid fa-rotate-right"></i>
+            </button>
+            <!-- Theater Mode -->
+            <button onclick="toggleTheaterMode()" title="Theater Mode" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-lg smooth-transition">
+              <i class="fa-solid fa-expand"></i> Theater
+            </button>
+            <!-- Fullscreen Frame -->
+            <button onclick="fullscreenFrame()" title="Browser Fullscreen" class="text-xs bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded-lg font-medium smooth-transition shadow-sm">
+              <i class="fa-solid fa-up-right-and-down-left-from-center mr-1"></i> Fullscreen
+            </button>
+          </div>
+        </div>
+
+        <!-- The Responsive Iframe Display -->
+        <div class="iframe-wrapper border border-slate-800">
+          <iframe id="mainIframe" src="https://kirka.io" allow="autoplay; encrypted-media; camera; microphone; geolocation; fullscreen" allowfullscreen></iframe>
+        </div>
+      </section>
+
+      <!-- CATEGORY 1: GAMES GRID -->
+      <section id="section-games" class="space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <h2 class="text-lg font-bold text-white flex items-center">
+            <i class="fa-solid fa-crosshairs text-blue-500 mr-2"></i> Featured Browser FPS & Arena Games
+          </h2>
+          <span class="text-xs text-slate-400">Click any game to load instantly</span>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
+          <!-- Game Card 1 -->
+          <div onclick="launchApp('Kirka.io FPS', 'https://kirka.io')" class="game-card glass-card p-3 rounded-xl cursor-pointer border border-slate-800 smooth-transition group text-center space-y-2">
+            <div class="w-full h-24 bg-gradient-to-br from-indigo-900 to-purple-900 rounded-lg flex items-center justify-center text-3xl text-indigo-300 group-hover:scale-105 smooth-transition">
+              <i class="fa-solid fa-gun"></i>
+            </div>
+            <p class="font-semibold text-xs text-white truncate">Kirka.io</p>
+            <span class="inline-block text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full">FPS Shooter</span>
+          </div>
+
+          <!-- Game Card 2 -->
+          <div onclick="launchApp('Shell Shockers', 'https://shellshock.io')" class="game-card glass-card p-3 rounded-xl cursor-pointer border border-slate-800 smooth-transition group text-center space-y-2">
+            <div class="w-full h-24 bg-gradient-to-br from-amber-900 to-orange-900 rounded-lg flex items-center justify-center text-3xl text-amber-300 group-hover:scale-105 smooth-transition">
+              <i class="fa-solid fa-egg"></i>
+            </div>
+            <p class="font-semibold text-xs text-white truncate">Shell Shockers</p>
+            <span class="inline-block text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full">Egg Shooter</span>
+          </div>
+
+          <!-- Game Card 3 -->
+          <div onclick="launchApp('Ev.io Sci-Fi Shooter', 'https://ev.io')" class="game-card glass-card p-3 rounded-xl cursor-pointer border border-slate-800 smooth-transition group text-center space-y-2">
+            <div class="w-full h-24 bg-gradient-to-br from-cyan-900 to-blue-900 rounded-lg flex items-center justify-center text-3xl text-cyan-300 group-hover:scale-105 smooth-transition">
+              <i class="fa-solid fa-robot"></i>
+            </div>
+            <p class="font-semibold text-xs text-white truncate">Ev.io</p>
+            <span class="inline-block text-[10px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full">Sci-Fi FPS</span>
+          </div>
+
+          <!-- Game Card 4 -->
+          <div onclick="launchApp('Venge.io Hero FPS', 'https://venge.io')" class="game-card glass-card p-3 rounded-xl cursor-pointer border border-slate-800 smooth-transition group text-center space-y-2">
+            <div class="w-full h-24 bg-gradient-to-br from-rose-900 to-red-900 rounded-lg flex items-center justify-center text-3xl text-rose-300 group-hover:scale-105 smooth-transition">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <p class="font-semibold text-xs text-white truncate">Venge.io</p>
+            <span class="inline-block text-[10px] bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded-full">Hero FPS</span>
+          </div>
+
+          <!-- Game Card 5 -->
+          <div onclick="launchApp('Voxiom.io Block FPS', 'https://voxiom.io')" class="game-card glass-card p-3 rounded-xl cursor-pointer border border-slate-800 smooth-transition group text-center space-y-2">
+            <div class="w-full h-24 bg-gradient-to-br from-emerald-900 to-teal-900 rounded-lg flex items-center justify-center text-3xl text-emerald-300 group-hover:scale-105 smooth-transition">
+              <i class="fa-solid fa-cube"></i>
+            </div>
+            <p class="font-semibold text-xs text-white truncate">Voxiom.io</p>
+            <span class="inline-block text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full">Voxel BR</span>
+          </div>
+
+          <!-- Game Card 6 -->
+          <div onclick="launchApp('Narrow One Bow Shooter', 'https://narrow.one')" class="game-card glass-card p-3 rounded-xl cursor-pointer border border-slate-800 smooth-transition group text-center space-y-2">
+            <div class="w-full h-24 bg-gradient-to-br from-yellow-900 to-amber-950 rounded-lg flex items-center justify-center text-3xl text-yellow-300 group-hover:scale-105 smooth-transition">
+              <i class="fa-solid fa-bullseye"></i>
+            </div>
+            <p class="font-semibold text-xs text-white truncate">Narrow One</p>
+            <span class="inline-block text-[10px] bg-yellow-500/20 text-yellow-300 px-2 py-0.5 rounded-full">Archery</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- CATEGORY 2: YOUTUBE SECTION -->
+      <section id="section-youtube" class="hidden space-y-4">
+        <div class="glass-card p-5 rounded-2xl border border-slate-800 space-y-4">
+          <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-red-600/20 text-red-500 flex items-center justify-center text-xl">
+              <i class="fa-brands fa-youtube"></i>
+            </div>
+            <div>
+              <h2 class="text-lg font-bold text-white">YouTube Embed Launcher</h2>
+              <p class="text-xs text-slate-400">Watch videos seamlessly inside your private portal layout</p>
+            </div>
+          </div>
+
+          <!-- Input Bar for YouTube Link -->
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input type="text" id="ytUrlInput" placeholder="Paste YouTube Link or Video ID (e.g. https://www.youtube.com/watch?v=...)"
+              class="glass-input flex-1 px-4 py-2.5 rounded-xl text-sm text-white placeholder-slate-500">
+            <button onclick="loadCustomYouTube()"
+              class="bg-red-600 hover:bg-red-500 text-white font-semibold px-5 py-2.5 rounded-xl text-sm smooth-transition flex items-center justify-center space-x-2">
+              <i class="fa-solid fa-play"></i>
+              <span>Play Video</span>
+    
+            </button>
+          </div>
+
+          <!-- Quick YouTube Presets -->
+          <div class="pt-2">
+            <p class="text-xs text-slate-400 mb-2">Quick Presets & Lo-Fi Beats:</p>
+            <div class="flex flex-wrap gap-2">
+              <button onclick="launchApp('Lofi Hip Hop Radio', 'https://www.youtube-nocookie.com/embed/jfKfPfyJRdk?autoplay=1')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-xs smooth-transition">
+                ☕ Lofi Gi
